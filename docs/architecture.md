@@ -7,3 +7,7 @@
     
 ### Project description ###
 The aim of this project is creating an autonomus robot which will be able to scan surrounding and detect obstacles.
+
+### Architecture diagram ###
+
+![Architecture diagram](architecture_diagram.jpg "architecture diagram ")
