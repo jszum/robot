@@ -14,3 +14,8 @@ The aim of this project is creating an autonomus robot which will be able to sca
 
 ### Use of RTOS ###
 In the project FreeRTOS will be used for following purposes:
+
+#### Tasks ####
+
+System will consist of two task:
+1. Scanning  + servo movements
