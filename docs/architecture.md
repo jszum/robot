@@ -11,3 +11,6 @@ The aim of this project is creating an autonomus robot which will be able to sca
 ### Architecture diagram ###
 
 ![Architecture diagram](architecture_diagram.jpg "architecture diagram ")
+
+### Use of RTOS ###
+In the project FreeRTOS will be used for following purposes:
