@@ -17,8 +17,9 @@ In the project FreeRTOS will be used for following purposes:
 
 #### Tasks ####
 
-System will consist of two task:
+System will consist of three tasks:
 1. Scanning  + servo movements
 2. Robot movements
+3. Sending data to application
 
-First task should be launched periodically and have higher priority than second task. After detecting obstacle close to robot it should be able to break second task. 
+First task should be launched periodically and have higher priority than second task. After detecting obstacle close to robot it should be able to break second task. Third task should have the lower priority.
