@@ -23,3 +23,5 @@ System will consist of three tasks:
 3. Sending data to application
 
 First task should be launched periodically and have higher priority than second task. After detecting obstacle close to robot it should be able to break second task. Third task should have the lower priority.
+
+First task would also go with updating custom array-like structure - the map that robot will have in the internal memory. It will be designed to store one of currently planned three state, so the size of individual cell can be optimized. It does not have to use all bits of integer number.
