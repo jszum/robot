@@ -1,8 +1,10 @@
 #ifndef ROBOT_MAP_H
 #define ROBOT_MAP_H
 
+#include <stdlib.h>
+
 int allocateMap(int* map, int rows, int columns);
-int getCell(int* map, int rows, int columns);
+int getCell(int* map, int rows, int columns, int row, int column);
 void setCell(int* map, int rows, int columns);
 int calcAdjustedSize(int rows, int columns);
 
