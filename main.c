@@ -6,12 +6,20 @@
 int main(int argc, char *argv[])
 {
     int* map = NULL;
-    int mapsize = allocateMap(map, 10, 10);
+    int rows = 5;
+    int columns = 3;
 
-    printf("Required size = %d\n", mapsize);
+
+    int mapsize = calcAdjustedSize(rows, columns);
+    map = (int*)calloc(mapsize, sizeof(int));
+
+    printf("C-required size = %d\n", rows*columns);
+    printf("Opt required size = %d\n", mapsize);
 
 
-    print_map(map,10,10);
+    int value = getCell(map,rows,columns,2,1);
+
+    print_map(map,rows,columns);
     return 0;
 }
 
