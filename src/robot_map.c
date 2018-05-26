@@ -2,24 +2,35 @@
 
 #define STATES 4
 #define BITS_PER_INT  (sizeof(int)*8)
-enum cellState {
-    stateUNKN = 0b00,
-    stateFree = 0b01,
-    stateBlock = 0b10,
-    stateRover = 0b11
-};
 
-const char cellString[4] = {'U',' ','X','O'};
+const char cellString[] = {' ','O','X','#'};\
+const char orntString[] = {'N','S','W','E'};
 int states = STATES;
 int states_bit = STATES/2;
 
-int allocateMap(int* map, int rows, int columns) {
+int rover_row = 0;
+int rover_column = 0;
+int orientation = 0;
+
+int* allocateMap(int rows, int columns) {
 
     int adjusted_size = calcAdjustedSize(rows, columns);
+    int* map = (int*)calloc(adjusted_size, sizeof(int));
 
-    map = (int*)calloc(adjusted_size, sizeof (int));
+    placeRoverInMiddle(map, rows, columns);
+    return map;
+}
 
-    return adjusted_size;
+void placeRoverInMiddle(int* map, int rows, int columns) {
+    int middle_row = rows/2;
+    int middle_column = columns/2;
+
+    rover_row = middle_row;
+    rover_column = middle_column;
+
+    orientation = oNorth;
+
+    setCell(map, rows, columns, middle_row, middle_column, stateRover);
 }
 
 int getCell(int* map, int rows, int columns, int selected_row, int selected_column) {
@@ -29,7 +40,7 @@ int getCell(int* map, int rows, int columns, int selected_row, int selected_colu
     int mask = 0b11;
 
     int integer_cell = adj_cell*states_bit/(BITS_PER_INT);
-    int shift = BITS_PER_INT - (BITS_PER_INT/states_bit - adj_cell - 1)*states_bit;
+    int shift = BITS_PER_INT - (BITS_PER_INT/states_bit - adj_cell)*states_bit;
 
     int full_integer = map[integer_cell];
 
@@ -38,8 +49,16 @@ int getCell(int* map, int rows, int columns, int selected_row, int selected_colu
     return value;
 }
 
-void setCell(int* map, int rows, int columns){
+void setCell(int* map, int rows, int columns, int selected_row, int selected_column, int state){
+    int adj_cell = selected_row*columns + selected_column;
 
+    int integer_cell = adj_cell*states_bit/(BITS_PER_INT);
+    int shift = BITS_PER_INT - (BITS_PER_INT/states_bit - adj_cell)*states_bit;
+
+    int mask = 0b11;
+
+    map[integer_cell] &= ~(mask << shift);
+    map[integer_cell] |= (state << shift);
 }
 
 int calcAdjustedSize(int rows, int columns) {
@@ -48,18 +67,34 @@ int calcAdjustedSize(int rows, int columns) {
     return adjusted_size;
 }
 
+int getBits(int integer, int shift) {
+
+    return (integer >> shift) & 0b11;
+}
+
 #ifdef __linux__
 void print_map(int* map, int rows, int columns)
 {
+    int size = calcAdjustedSize(rows, columns);
+    int internal_size = (sizeof(int)*8/states_bit);
+    int counter = 0;
     int i = 0;
-    for(i = 0; i<rows*columns; ++i)
+    for(i = 0; i<size; ++i)
     {
-        if((i%columns)==0)
+        for(int j = 0; j<internal_size; ++j)
         {
-            printf("\n");
+            if((counter%columns)==0)
+            {
+                printf("\n");
+            }
+            if(counter == rows*columns) {
+                break;
+            }
+            ++counter;
+            int value = getBits(map[i], j*2);
+            char sign = cellString[value];
+            printf("[%c]", sign);
         }
-
-        printf("[%s]", " ");
     }
     printf("\n");
 }
