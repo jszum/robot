@@ -33,6 +33,51 @@ void placeRoverInMiddle(int* map, int rows, int columns) {
     setCell(map, rows, columns, middle_row, middle_column, stateRover);
 }
 
+void turnLeft() {
+
+    if(orientation == oNorth) orientation = oWest;
+    else if(orientation == oWest)  orientation = oSouth;
+    else if(orientation == oSouth) orientation = oEast;
+    else if(orientation == oEast)  orientation = oNorth;
+
+}
+
+void turnRight(){
+    if(orientation == oNorth) orientation = oEast;
+    else if(orientation == oEast)  orientation = oSouth;
+    else if(orientation == oSouth) orientation = oWest;
+    else if(orientation == oWest)  orientation = oNorth;
+}
+
+int moveForward(int* map, int rows, int columns) {
+
+    int rover_row_old = rover_row;
+    int rover_column_old = rover_column;
+
+    if(orientation == oNorth && rover_row > 0) {
+        rover_row -= 1;
+    }
+    else if(orientation == oEast && rover_column < (columns-1))  {
+        rover_column += 1;
+    }
+    else if(orientation == oSouth && rover_row < (rows-1)) {
+        rover_row += 1;
+    }
+    else if(orientation == oWest && rover_column > 0) {
+        rover_column -= 1;
+    }
+    else {
+        return 1;
+    }
+
+    setCell(map, rows, columns, rover_row_old, rover_column_old, stateFree);
+    setCell(map, rows, columns, rover_row, rover_column, stateRover);
+    return 0;
+}
+
+
+
+
 int getCell(int* map, int rows, int columns, int selected_row, int selected_column) {
 
     int adj_cell = selected_row*columns + selected_column;

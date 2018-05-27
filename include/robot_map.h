@@ -19,12 +19,15 @@ enum roverOrientation {
     oEast  = 3
 };
 
-
 int* allocateMap(int rows, int columns);
 int getCell(int* map, int rows, int columns, int row, int column);
 void setCell(int* map, int rows, int columns, int selected_row, int selected_column, int state);
 int calcAdjustedSize(int rows, int columns);
 int getBits(int integer, int shift);
+int moveForward(int* map, int rows, int columns);
+void turnLeft();
+void turnRight();
+
 
 #ifdef __linux__
 void print_map(int* map, int rows, int columns);
