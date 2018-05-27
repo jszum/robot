@@ -27,7 +27,15 @@ int getBits(int integer, int shift);
 int moveForward(int* map, int rows, int columns);
 void turnLeft();
 void turnRight();
+void turnBack();
 
+int isNextCellFree(int* map, int rows, int columns);
+void setNextCellFree(int* map, int rows, int columns);
+
+void setCellAheadBlocked(int* map, int rows, int columns);
+void setCellBlockedAtDistance(int* map, int rows, int columns, int n);
+void setNCellsAheadFree(int* map, int rows, int columns, int n);
+int isInRange(int rows, int columns, int selected_row, int selected_column);
 
 #ifdef __linux__
 void print_map(int* map, int rows, int columns);

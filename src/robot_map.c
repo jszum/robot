@@ -49,6 +49,11 @@ void turnRight(){
     else if(orientation == oWest)  orientation = oNorth;
 }
 
+void turnBack() {
+    turnLeft();
+    turnLeft();
+}
+
 int moveForward(int* map, int rows, int columns) {
 
     int rover_row_old = rover_row;
@@ -76,7 +81,94 @@ int moveForward(int* map, int rows, int columns) {
 }
 
 
+void setNCellsAheadFree(int* map, int rows, int columns, int n) {
 
+    int rover_row_var = rover_row;
+    int rover_column_var = rover_column;
+
+
+    int i = 0;
+    for(i = 0; i<n; ++i) {
+        if(orientation == oNorth) {
+            rover_row_var -= 1;
+        }
+        else if(orientation == oEast)  {
+            rover_column_var += 1;
+        }
+        else if(orientation == oSouth) {
+            rover_row_var += 1;
+        }
+        else if(orientation == oWest) {
+            rover_column_var -= 1;
+        }
+
+        if(isInRange(rows, columns, rover_row_var, rover_column_var)) {
+            setCell(map, rows, columns, rover_row_var, rover_column_var, stateFree);
+        }
+        else {
+            break;
+        }
+    }
+
+}
+
+void setNextCellFree(int* map, int rows, int columns) {
+    setNCellsAheadFree(map, rows, columns, 1);
+}
+
+int isNextCellFree(int* map, int rows, int columns) {
+
+    int rover_row_var = rover_row;
+    int rover_column_var = rover_column;
+
+    if(orientation == oNorth) {
+        rover_row_var -= 1;
+    }
+    else if(orientation == oEast)  {
+        rover_column_var += 1;
+    }
+    else if(orientation == oSouth) {
+        rover_row_var += 1;
+    }
+    else if(orientation == oWest) {
+        rover_column_var -= 1;
+    }
+
+    int status = getCell(map, rows, columns, rover_row_var, rover_column_var);
+
+    return (status == stateFree);
+
+}
+
+int isInRange(int rows, int columns, int selected_row, int selected_column) {
+    if(selected_row > 0 && selected_row < (rows-1)
+            && selected_column > 0 && (selected_column < columns-1))
+    {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+void setCellAheadBlocked(int* map, int rows, int columns) {
+    setCellBlockedAtDistance(map, rows, columns, 1);
+}
+
+void setCellBlockedAtDistance(int* map, int rows, int columns, int n) {
+
+    int cell_ahead_row = rover_row;
+    int cell_ahead_column = rover_column;
+
+    if(orientation == oNorth) cell_ahead_row = rover_row-n;
+    else if(orientation == oWest)  cell_ahead_column = rover_column -n;
+    else if(orientation == oSouth) cell_ahead_row = rover_row+n;
+    else if(orientation == oEast)  cell_ahead_column = rover_column+n;
+
+    if(isInRange(rows, columns, cell_ahead_row, cell_ahead_column)) {
+        setCell(map, rows, columns, cell_ahead_row, cell_ahead_column, stateBlock);
+    }
+}
 
 int getCell(int* map, int rows, int columns, int selected_row, int selected_column) {
 
