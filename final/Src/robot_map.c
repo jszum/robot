@@ -172,6 +172,7 @@ void setCellBlockedAtDistance(int* map, int rows, int columns, int n) {
     if(isInRange(rows, columns, cell_ahead_row, cell_ahead_column)) {
         setCell(map, rows, columns, cell_ahead_row, cell_ahead_column, stateBlock);
     }
+    setNCellsAheadFree(map, rows, columns, n-1);
 }
 
 int getCell(int* map, int rows, int columns, int selected_row, int selected_column) {
