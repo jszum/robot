@@ -4,19 +4,19 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-enum cellState {
-    stateUNKN = 0b00,
-    stateFree = 0b01,
-    stateBlock = 0b10,
-    stateRover = 0b11
+enum cS{
+    stateUNKN,
+		stateFree,
+		stateBlock,
+    stateRover
 };
 
 
-enum roverOrientation {
-    oNorth = 0,
-    oSouth = 1,
-    oWest  = 2,
-    oEast  = 3
+enum rO{
+    oNorth,
+    oSouth,
+    oWest,
+    oEast
 };
 
 int* allocateMap(int rows, int columns);

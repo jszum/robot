@@ -3,6 +3,9 @@
 #define STATES 4
 #define BITS_PER_INT  (sizeof(int)*8)
 
+enum cS cellState;
+enum rO roverOrientation;
+
 const char cellString[] = {' ','O','X','#'};\
 const char orntString[] = {'N','S','W','E'};
 int states = STATES;
@@ -11,15 +14,6 @@ int states_bit = STATES/2;
 int rover_row = 0;
 int rover_column = 0;
 int orientation = 0;
-
-int* allocateMap(int rows, int columns) {
-
-    int adjusted_size = calcAdjustedSize(rows, columns);
-    int* map = (int*)calloc(adjusted_size, sizeof(int));
-
-    placeRoverInMiddle(map, rows, columns);
-    return map;
-}
 
 void placeRoverInMiddle(int* map, int rows, int columns) {
     int middle_row = rows/2;
@@ -31,6 +25,16 @@ void placeRoverInMiddle(int* map, int rows, int columns) {
     orientation = oNorth;
 
     setCell(map, rows, columns, middle_row, middle_column, stateRover);
+}
+
+
+int* allocateMap(int rows, int columns) {
+
+    int adjusted_size = calcAdjustedSize(rows, columns);
+    int* map = (int*)calloc(adjusted_size, sizeof(int));
+
+    placeRoverInMiddle(map, rows, columns);
+    return map;
 }
 
 void turnLeft() {
@@ -174,7 +178,7 @@ int getCell(int* map, int rows, int columns, int selected_row, int selected_colu
 
     int adj_cell = selected_row*columns + selected_column;
 
-    int mask = 0b11;
+    int mask = 3;
 
     int integer_cell = adj_cell*states_bit/(BITS_PER_INT);
     int shift = BITS_PER_INT - (BITS_PER_INT/states_bit - adj_cell)*states_bit;
@@ -192,7 +196,7 @@ void setCell(int* map, int rows, int columns, int selected_row, int selected_col
     int integer_cell = adj_cell*states_bit/(BITS_PER_INT);
     int shift = BITS_PER_INT - (BITS_PER_INT/states_bit - adj_cell)*states_bit;
 
-    int mask = 0b11;
+    int mask = 3;
 
     map[integer_cell] &= ~(mask << shift);
     map[integer_cell] |= (state << shift);
@@ -206,7 +210,7 @@ int calcAdjustedSize(int rows, int columns) {
 
 int getBits(int integer, int shift) {
 
-    return (integer >> shift) & 0b11;
+    return (integer >> shift) & 3;
 }
 
 #ifdef __linux__
